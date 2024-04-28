@@ -32,49 +32,14 @@ function App() {
     };
 
     return (
-        <div className="flex flex-col max-w-xl mx-auto mt-16">
-            <h1 className="text-2xl font-bold mb-8">Memory Allocation Simulation</h1>
-            <div className='flex flex-col mb-6 space-y-4'>
-                <div className='flex flex-row justify-between items-center space-x-6'>
-                    <label htmlFor='memorySize'>Memory Size</label>
-                    <input className='p-2 rounded-lg' id='memorySize' type='number' value={memorySize} onChange={(e) => setMemorySize(parseInt(e.target.value))} />
-                </div>
-                <div className='flex flex-row justify-between items-center space-x-6'>
-                    <label htmlFor='numProcesses'>Number of Processes</label>
-                    <input className='p-2 rounded-lg' id='numProcesses' type='number' value={numProcesses} onChange={(e) => setNumProcesses(parseInt(e.target.value))} />
-                </div>
-                <div className='flex flex-row justify-between items-center space-x-6'>
-                    <label htmlFor='minSize'>Minimum Process Size</label>
-                    <input className='p-2 rounded-lg' id='minSize' type='number' value={minProcessSize} onChange={(e) => setMinProcessSize(parseInt(e.target.value))} />
-                </div>
-                <div className='flex flex-row justify-between items-center space-x-6'>
-                    <label htmlFor='maxSize'>Maximum Process Size</label>
-                    <input className='p-2 rounded-lg' id='maxSize' type='number' value={maxProcessSize} onChange={(e) => setMaxProcessSize(parseInt(e.target.value))} />
-                </div>
-                <div className='flex flex-row justify-between items-center space-x-6'>
-                    <label htmlFor='minSize'>Minimum Block Size</label>
-                    <input className='p-2 rounded-lg' id='minSize' type='number' value={minBlockSize} onChange={(e) => setMinBlockSize(parseInt(e.target.value))} />
-                </div>
-                <div className='flex flex-row justify-between items-center space-x-6'>
-                    <label htmlFor='minSize'>Maximum Block Size</label>
-                    <input className='p-2 rounded-lg' id='minSize' type='number' value={maxBlockSize} onChange={(e) => setMaxBlockSize(parseInt(e.target.value))} />
-                </div>
-                <div className='flex flex-row justify-between items-center space-x-6'>
-                    <label htmlFor='algorithm'>Algorithm</label>
-                    <select className='py-2 px-4 rounded-lg' id='algorithm' value={algorithm} onChange={(e) => setAlgorithm(e.target.value)}>
-                        <option value='first_fit'>First Fit</option>
-                    </select>
-                </div>
-            </div>
+        <div className='flex flex-row max-w-4xl mx-auto'>
+            {/* First column, memory initialization, memory state, process freeing */}
+            <div className='flex flex-col w-1/3 p-4'>
+                <div className='flex flex-col mb-4'>
+                    <h2 className='text-lg font-bold'>Memory Initialization</h2>
 
-            <button className='py-2 px-6 mb-6 w-fit border rounded-md hover:border-teal-200 hover:text-teal-200 transition-colors' onClick={handleSimulate}>Simulate</button>
-            {error && <p className="text-red-500">{error}</p>}
-            {simulationResults && (
-            <div className='flex flex-col'>
-                <h2 className='text-lg font-bold'>Simulation Results</h2>
-                <pre className='h-[500px] overflow-y-scroll'>{JSON.stringify(simulationResults, null, 2)}</pre>
+                </div>
             </div>
-            )}
         </div>
     );
 }
