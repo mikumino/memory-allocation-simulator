@@ -72,7 +72,7 @@ function App() {
             {simulationResults && (
             <div className='flex flex-col'>
                 <h2 className='text-lg font-bold'>Simulation Results</h2>
-                <pre>{JSON.stringify(simulationResults, null, 2)}</pre>
+                <pre className='h-[500px] overflow-y-scroll'>{JSON.stringify(simulationResults, null, 2)}</pre>
             </div>
             )}
         </div>
