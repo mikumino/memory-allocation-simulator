@@ -69,13 +69,19 @@ def first_fit(memory, process):
             print(block.size, process.size)
             return True
     return False
-           
+
+# TODO: Implement next fit algorithm
+# Next fit is an optimization of first fit. It starts searching from the last block that was allocated, so we need to keep track of the last block that was allocated
+def next_fit(memory, process):
+    return None
 
 # TODO: Implement best fit algorithm
+# Searches for the smallest block that fits the process
 def best_fit(memory, process):
    return None
 
 # TODO: Implement worst fit algorithm
+# Searches for the largest block that fits the process
 def worst_fit(memory, process):
    return None
 
