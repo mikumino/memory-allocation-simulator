@@ -43,7 +43,7 @@ function App() {
     }
 
     return (
-        <div className='flex flex-col max-w-6xl mx-auto'>
+        <div className='flex flex-col max-w-6xl p-4 mx-auto'>
             <div className='flex flex-row'>
                 {/* First column, memory initialization, memory state, process freeing */}
                 <div className='flex flex-col w-1/2 p-4'>
