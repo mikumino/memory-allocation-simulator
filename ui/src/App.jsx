@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import KBInput from './components/KBInput';
 import axios from 'axios';
 
 function App() {
@@ -31,13 +32,28 @@ function App() {
         }
     };
 
-    return (
-        <div className='flex flex-row max-w-4xl mx-auto'>
-            {/* First column, memory initialization, memory state, process freeing */}
-            <div className='flex flex-col w-1/3 p-4'>
-                <div className='flex flex-col mb-4'>
-                    <h2 className='text-lg font-bold'>Memory Initialization</h2>
+    const handleInitializeMemory = async () => {
+        // TODO: Implement this function
+        console.log('Memory initialized');
+    };
 
+    return (
+        <div className='flex flex-row mx-auto'>
+            {/* First column, memory initialization, memory state, process freeing */}
+            <div className='flex flex-col w-1/2 p-4'>
+                {/* Memory Initialization */}
+                <div className='flex flex-col space-y-4 mb-4'>
+                    <h2 className='text-lg font-bold'>Memory Initialization</h2>
+                    <KBInput label='Memory Size' value={memorySize} onChange={setMemorySize} />
+                    <KBInput label='Min Block Size' value={minBlockSize} onChange={setMinBlockSize} />
+                    <KBInput label='Max Block Size' value={maxBlockSize} onChange={setMaxBlockSize} />
+                    <button className='btn btn-outline rounded-lg' onClick={handleInitializeMemory}>Initialize Memory</button>
+                </div>
+                {/* Memory State */}
+                <div className='divider'></div>
+                <div className='flex flex-col space-y-4 mb-4'>
+                    <h2 className='text-lg font-bold'>Memory State</h2>
+                    {/* Memory state visualization */}
                 </div>
             </div>
         </div>
