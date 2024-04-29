@@ -15,7 +15,7 @@ const MemoryStateTable = ({ memory }) => {
                 {memory.memory.blocks.map((block, i) => (
                     <tr key={i}>
                         <td>{i}</td>
-                        <td>{block.size}</td>
+                        <td>{block.size} KB</td>
                         <td>{block.process ? 'Yes' : 'No'}</td>
                     </tr>
                 ))}
