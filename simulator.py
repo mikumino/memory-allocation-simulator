@@ -81,11 +81,8 @@ def first_fit(memory, process):
             return True
         # if block size is greater than process size and is free, split the block into an allocated and unallocated block
         elif block.size > process.size and not block.allocated:
-            print([block.__dict__ for block in memory.blocks])
             memory.insert_block(memory.blocks.index(block), process.size, True)
-            print(block.size, process.size)
             block.size -= process.size  # remaining block size
-            print(block.size, process.size)
             return True
     return False
 
