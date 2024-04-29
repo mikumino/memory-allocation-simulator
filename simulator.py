@@ -101,22 +101,3 @@ def best_fit(memory, process):
 def worst_fit(memory, process):
    return None
 
-# Simulate allocation for a given algorithm
-def simulate(memory_size, processes, algorithm, min_block_size=1, max_block_size=10):
-    memory = Memory(memory_size)
-    random_memory_state(memory, min_block_size, max_block_size)
-    old_memory = memory.copy()
-    print([block.__dict__ for block in old_memory.blocks])
-    
-    for process in processes:
-        algorithm(memory, process)
-    
-    return {
-        "previous_memory": [block.__dict__ for block in old_memory.blocks],
-        "memory": [block.__dict__ for block in memory.blocks],
-        "available_space": memory.get_available_space(),
-        "unallocated_processes": [process.__dict__ for process in processes if not any([block.size == process.size and block.allocated for block in memory.blocks])]
-    }
-
-
-
