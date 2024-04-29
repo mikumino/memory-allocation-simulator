@@ -32,6 +32,7 @@ function App() {
             });
             setError(null);
             setProcessPool([]);
+            setSelectedProcess(null);
             setMemoryState(response.data);
             setInitialMemoryState(response.data);
         } catch (error) {
@@ -143,14 +144,8 @@ function App() {
             {/* Simulation Results */}
             <div className='flex flex-col w-full'>
                 <h1 className='text-2xl font-bold mb-4'>Simulation</h1>
-                {/* Placeholder memory state */}
-                <div className='flex flex-row space-x-1 mb-4'>
-                    <div className='h-16 w-8 rounded-md bg-amber-300'></div>
-                    <div className='h-16 w-16 rounded-md bg-blue-300'></div>
-                    <div className='h-16 w-32 rounded-md bg-amber-300'></div>
-                    <div className='h-16 w-64 rounded-md bg-amber-300'></div>
-                    <div className='h-16 flex-grow rounded-md bg-blue-300'></div>
-                </div>
+                {memoryState ? <MemoryState memory={memoryState} /> : <p>Memory not yet initialized.</p>}
+                {memoryState ? <MemoryStateTable memory={memoryState} /> : null}
                 <div className='flex flex-row'>
                     <button className='btn btn-outline btn-success rounded-lg mr-2'>Free Process</button>
                     <button className='btn btn-outline btn-info rounded-lg'>Free Random Process</button>

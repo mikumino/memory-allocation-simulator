@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const MemoryStateTable = ({ memory }) => {
     return (
-        <div className='overflow-y-auto max-h-64 w-full'>
+        <div className='overflow-y-auto max-h-64 w-full mb-6'>
         <table className='table table-pin-rows'>
             <thead>
                 <tr>
