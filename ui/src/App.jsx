@@ -15,24 +15,9 @@ function App() {
     const [memoryState, setMemoryState] = useState(null);
     const [error, setError] = useState(null);
 
-    const handleSimulate = async () => {
-        try {
-            const response = await axios.post('http://127.0.0.1:5000/simulate', {
-                memory_size: memorySize,
-                num_processes: numProcesses,
-                min_process_size: minProcessSize,
-                max_process_size: maxProcessSize,
-                min_block_size: minBlockSize,
-                max_block_size: maxBlockSize,
-                algorithm,
-            });
-            setSimulationResults(response.data);
-            setError(null);
-        } catch (error) {
-            console.error('Error during simulation:', error);
-            setError('An error occurred during simulation. Please try again.');
-        }
-    };
+    const handleAllocate = async () => {
+        // TODO: Implement this function
+    }
 
     const handleInitializeMemory = async () => {
         try {
@@ -134,7 +119,7 @@ function App() {
                             </select>
                         </div>
                         <div className='flex flex-row flex-grow w-full gap-2 items-center'>
-                            <button className='btn btn-primary rounded-lg flex-grow' onClick={handleSimulate}>Allocate</button>
+                            <button className='btn btn-primary rounded-lg flex-grow' onClick={handleAllocate}>Allocate</button>
                             <button className='btn btn-outline btn-danger rounded-lg flex-grow'>Allocate All</button>
                         </div>
                     </div>
