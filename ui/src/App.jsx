@@ -2,6 +2,7 @@ import { useState } from 'react';
 import KBInput from './components/KBInput';
 import MemoryState from './components/MemoryState';
 import MemoryStateTable from './components/MemoryStateTable';
+import ProcessPoolTable from './components/ProcessPoolTable';
 import axios from 'axios';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     const [algorithm, setAlgorithm] = useState('first_fit');
     const [initialMemoryState, setInitialMemoryState] = useState(null);
     const [memoryState, setMemoryState] = useState(null);
+    const [processPool, setProcessPool] = useState([]);
     const [error, setError] = useState(null);
 
     const handleAllocate = async () => {
@@ -44,16 +46,19 @@ function App() {
                 memory_requirement: memoryRequirement,
             });
             setError(null);
-            console.log(response.data);
+            processPool.push(response.data.process);
+            setProcessPool([...processPool]);
+            console.log(processPool);
+            console.log('Process created');
         } catch (error) {
             console.error('Error during process creation:', error);
             setError('An error occurred during process creation. Please try again.');
         }
-        console.log('Process created');
     }
 
     return (
         <div className='flex flex-col max-w-6xl p-4 mx-auto'>
+            {error ? <div className='alert alert-error'>{error}</div> : null}
             <div className='flex flex-row'>
                 {/* First column, memory initialization, memory state, process freeing */}
                 <div className='flex flex-col w-1/2 p-4'>
@@ -94,31 +99,7 @@ function App() {
                     {/* Process Pool and Sim Controls */}
                     <div className='flex flex-col space-y-4 mb-4'>
                         <h2 className='text-lg font-bold'>Process Pool</h2>
-                        {/* Once again, placeholder */}
-                        <div className='overflow-y-auto max-h-64 w-full'>
-                            <table className='table '>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Memory Requirement</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>50 KB</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>100 KB</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>75 KB</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <ProcessPoolTable processes={processPool} />
                         <div className='flex flex-row w-full justify-between items-center'>
                             <label htmlFor='algorithm'>Algorithm:</label>
                             <select className='select select-bordered px-16' id='algorithm' value={algorithm} onChange={(e) => setAlgorithm(e.target.value)}>
