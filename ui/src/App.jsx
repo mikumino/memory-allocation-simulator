@@ -17,6 +17,7 @@ function App() {
     const [memoryState, setMemoryState] = useState(null);
     const [processPool, setProcessPool] = useState([]);
     const [selectedProcess, setSelectedProcess] = useState(null);
+    const [selectedBlock, setSelectedBlock] = useState(null);
     const [error, setError] = useState(null);
 
     const handleAllocate = async () => {
@@ -80,6 +81,16 @@ function App() {
         console.log('Process selected:', process);
     };
 
+    const handleBlockSelection = (block) => {
+        setSelectedBlock(block);
+        console.log('Block selected:', block);
+    }
+
+    // probably a dumb way to do this but it works LOL
+    const dummyFunction = ()=> {
+        
+    }
+
     return (
         <div className='flex flex-col max-w-6xl p-4 mx-auto'>
             {error ? <div className='alert alert-error'>{error}</div> : null}
@@ -98,7 +109,7 @@ function App() {
                     <div className='divider'></div>
                     <div className='flex flex-col space-y-4 mb-4'>
                         <h2 className='text-lg font-bold'>Initial Memory State</h2>
-                        {memoryState ? <MemoryState memory={initialMemoryState} /> : <p>Memory not yet initialized.</p>}
+                        {memoryState ? <MemoryState memory={initialMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
                         {memoryState ? <MemoryStateTable memory={initialMemoryState} /> : null}
                     </div>
                 </div>
@@ -144,7 +155,7 @@ function App() {
             {/* Simulation Results */}
             <div className='flex flex-col w-full'>
                 <h1 className='text-2xl font-bold mb-4'>Simulation</h1>
-                {memoryState ? <MemoryState memory={memoryState} /> : <p>Memory not yet initialized.</p>}
+                {memoryState ? <MemoryState memory={memoryState} handleBlockSelection={handleBlockSelection}/> : <p>Memory not yet initialized.</p>}
                 {memoryState ? <MemoryStateTable memory={memoryState} /> : null}
                 <div className='flex flex-row'>
                     <button className='btn btn-outline btn-success rounded-lg mr-2'>Free Process</button>

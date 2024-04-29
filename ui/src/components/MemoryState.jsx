@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import MemoryBlock from './MemoryBlock';
 
-const MemoryState = ({ memory }) => {
+const MemoryState = ({ memory, handleBlockSelection }) => {
     let blocks = [];
     for (let i = 0; i < memory.memory.blocks.length; i++) {
         // TODO: Extract this into a separate component with info about the block
         blocks.push(
-            <MemoryBlock block={memory.memory.blocks[i]} memory_size={memory.memory.size} key={i} />
+            <MemoryBlock block={memory.memory.blocks[i]} memory_size={memory.memory.size} handleBlockSelection={handleBlockSelection} key={i} />
         );
     }
     return (
