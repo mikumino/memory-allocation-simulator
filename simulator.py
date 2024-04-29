@@ -1,9 +1,9 @@
 import random
 
 class Memory:
-    def __init__(self, size):
+    def __init__(self, size, blocks=[]):
         self.size = size
-        self.blocks = []
+        self.blocks = blocks
 
     def add_block(self, size):
         self.blocks.append(MemoryBlock(size))
@@ -49,12 +49,22 @@ class Process:
             "size": self.size
         }
 
-# Function to generate random process sizes
-def generate_processes(num_processes, min_size, max_size):
-    processes = []
-    for num in range(num_processes):
-        processes.append(Process(num, random.randint(min_size, max_size)))
-    return processes
+def dict_to_blocks(blocks_dict):
+    blocks = []
+    for block in blocks_dict:
+        blocks.append(MemoryBlock(block['size'], block['allocated'], Process(block['process']['id'], block['process']['size']) if block['process'] else None))
+    return blocks
+
+def generate_process_id(memory):
+    process_id = random.randint(0, 999)
+    for block in memory.blocks:
+        if block.process and block.process.id == process_id:
+            process_id = random.randint(0, 999)
+    return process_id
+
+# Generate a random process given min/max sizes for memory
+def generate_process(memory, min_size, max_size):
+    return Process(generate_process_id(memory), random.randint(min_size, max_size))
 
 # Given a Memory, randomly allocate blocks
 def random_memory_state(memory, min_block_size, max_block_size):

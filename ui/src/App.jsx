@@ -12,6 +12,7 @@ function App() {
     const [minBlockSize, setMinBlockSize] = useState(1);
     const [maxBlockSize, setMaxBlockSize] = useState(500);
     const [algorithm, setAlgorithm] = useState('first_fit');
+    const [initialMemoryState, setInitialMemoryState] = useState(null);
     const [memoryState, setMemoryState] = useState(null);
     const [error, setError] = useState(null);
 
@@ -28,7 +29,7 @@ function App() {
             });
             setError(null);
             setMemoryState(response.data);
-            console.log(response.data);
+            setInitialMemoryState(response.data);
         } catch (error) {
             console.error('Error during memory initialization:', error);
             setError('An error occurred during memory initialization. Please try again.');
@@ -37,7 +38,17 @@ function App() {
     };
 
     const handleCreateProcess = async () => {
-        // TODO: Implement this function
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/processes', {
+                memory: memoryState,
+                memory_requirement: memoryRequirement,
+            });
+            setError(null);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error during process creation:', error);
+            setError('An error occurred during process creation. Please try again.');
+        }
         console.log('Process created');
     }
 
@@ -58,10 +69,8 @@ function App() {
                     <div className='divider'></div>
                     <div className='flex flex-col space-y-4 mb-4'>
                         <h2 className='text-lg font-bold'>Initial Memory State</h2>
-                        {/* TODO: Memory state visualization */}
-                        {/* Placeholder stuff, make actual component */}
-                        {memoryState ? <MemoryState memory={memoryState} /> : <p>Memory not yet initialized.</p>}
-                        {memoryState ? <MemoryStateTable memory={memoryState} /> : null}
+                        {memoryState ? <MemoryState memory={initialMemoryState} /> : <p>Memory not yet initialized.</p>}
+                        {memoryState ? <MemoryStateTable memory={initialMemoryState} /> : null}
                     </div>
                 </div>
                 {/* Second column, process creation, pool*/}

@@ -25,6 +25,27 @@ def init():
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 400
+
+@app.route("/processes", methods=["POST"])
+def processes():
+    try:
+        data = json.loads(request.data)
+        # if memory requirement isn't given, they want a random process
+        print(data["memory"]['memory']['blocks'])
+        memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
+        if "memory_requirement" not in data:
+            min_process_size = data["min_process_size"]
+            max_process_size = data["max_process_size"]
+            process = generate_process(memory, min_process_size, max_process_size)
+            return jsonify({"process": process.to_dict()})
+        # otherwise, they want a process with a specific memory requirement
+        else:
+            process = Process(generate_process_id(memory), data["memory_requirement"])
+            return jsonify({"memory": memory.to_dict(), "process": process.to_dict()})
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 400
+
     
 if __name__ == "__main__":
     app.run(debug=True)
