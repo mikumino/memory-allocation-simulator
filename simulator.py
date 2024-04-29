@@ -14,11 +14,15 @@ class Memory:
     # Sum of unallocated blocks
     def get_available_space(self):
         return sum([block.size for block in self.blocks if not block.allocated])
-    
     def copy(self):
         memory = Memory(self.size)
         memory.blocks = [block.copy() for block in self.blocks]
         return memory
+    def to_dict(self):
+        return {
+            "size": self.size,
+            "blocks": [block.to_dict() for block in self.blocks]
+        }
 
 # A memory block, what Memory class will be made of
 class MemoryBlock:
@@ -34,7 +38,6 @@ class MemoryBlock:
             "allocated": self.allocated,
             "process": self.process.to_dict() if self.process else None
         }
-
 
 class Process:
     def __init__(self, id, size):

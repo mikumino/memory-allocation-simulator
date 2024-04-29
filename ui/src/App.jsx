@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import KBInput from './components/KBInput';
+import MemoryState from './components/MemoryState';
 import axios from 'axios';
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
     const [minBlockSize, setMinBlockSize] = useState(1);
     const [maxBlockSize, setMaxBlockSize] = useState(500);
     const [algorithm, setAlgorithm] = useState('first_fit');
-    const [simulationResults, setSimulationResults] = useState(null);
+    const [memoryState, setMemoryState] = useState(null);
     const [error, setError] = useState(null);
 
     const handleSimulate = async () => {
@@ -40,6 +41,7 @@ function App() {
                 max_block_size: maxBlockSize,
             });
             setError(null);
+            setMemoryState(response.data);
             console.log(response.data);
         } catch (error) {
             console.error('Error during memory initialization:', error);
@@ -72,12 +74,7 @@ function App() {
                         <h2 className='text-lg font-bold'>Initial Memory State</h2>
                         {/* TODO: Memory state visualization */}
                         {/* Placeholder stuff, make actual component */}
-                        <div className='flex flex-row space-x-1 mb-4'>
-                            <div className='h-16 w-8 rounded-md bg-amber-300'></div>
-                            <div className='h-16 w-16 rounded-md bg-blue-300'></div>
-                            <div className='h-16 w-32 rounded-md bg-amber-300'></div>
-                            <div className='h-16 flex-grow rounded-md bg-blue-300'></div>
-                        </div>
+                        {memoryState ? <MemoryState memory={memoryState} /> : null}
                         <div className='overflow-y-auto max-h-64 w-full'>
                             <table className='table '>
                                 <thead>

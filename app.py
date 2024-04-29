@@ -21,7 +21,7 @@ def init():
         max_block_size = data["max_block_size"]
         memory = Memory(memory_size)
         random_memory_state(memory, min_block_size, max_block_size)
-        return jsonify({"memory": [block.to_dict() for block in memory.blocks]})
+        return jsonify({"memory": memory.to_dict()})
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 400
