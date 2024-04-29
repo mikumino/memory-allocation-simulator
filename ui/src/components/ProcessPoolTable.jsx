@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
+import ProcessRow from './ProcessRow';
 
-const ProcessPoolTable = ({ processes }) => {
+const ProcessPoolTable = ({ processes, handleProcessSelection }) => {
     return (
         <div className='overflow-y-auto max-h-64 w-full'>
             <table className="table">
@@ -16,10 +17,7 @@ const ProcessPoolTable = ({ processes }) => {
                             <td colSpan='2'>No processes in pool</td>
                     </tr>}
                     {processes.map((process, i) => (
-                        <tr key={i}>
-                            <td>{process.id}</td>
-                            <td>{process.size}</td>
-                        </tr>
+                        <ProcessRow key={i} process={process} handleProcessSelection={handleProcessSelection}  />
                     ))}
                 </tbody>
             </table>

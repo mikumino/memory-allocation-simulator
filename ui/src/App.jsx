@@ -16,6 +16,7 @@ function App() {
     const [initialMemoryState, setInitialMemoryState] = useState(null);
     const [memoryState, setMemoryState] = useState(null);
     const [processPool, setProcessPool] = useState([]);
+    const [selectedProcess, setSelectedProcess] = useState(null);
     const [error, setError] = useState(null);
 
     const handleAllocate = async () => {
@@ -30,6 +31,7 @@ function App() {
                 max_block_size: maxBlockSize,
             });
             setError(null);
+            setProcessPool([]);
             setMemoryState(response.data);
             setInitialMemoryState(response.data);
         } catch (error) {
@@ -71,6 +73,11 @@ function App() {
             setError('An error occurred during random process creation. Please try again.');
         }   
     }
+
+    const handleProcessSelection = (process) => {
+        setSelectedProcess(process);
+        console.log('Process selected:', process);
+    };
 
     return (
         <div className='flex flex-col max-w-6xl p-4 mx-auto'>
@@ -115,7 +122,8 @@ function App() {
                     {/* Process Pool and Sim Controls */}
                     <div className='flex flex-col space-y-4 mb-4'>
                         <h2 className='text-lg font-bold'>Process Pool</h2>
-                        <ProcessPoolTable processes={processPool} />
+                        <ProcessPoolTable processes={processPool} handleProcessSelection={handleProcessSelection} />
+                        <p>Selected process: {selectedProcess ? selectedProcess.id : 'No process selected'}</p>
                         <div className='flex flex-row w-full justify-between items-center'>
                             <label htmlFor='algorithm'>Algorithm:</label>
                             <select className='select select-bordered px-16' id='algorithm' value={algorithm} onChange={(e) => setAlgorithm(e.target.value)}>
