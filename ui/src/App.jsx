@@ -56,6 +56,22 @@ function App() {
         }
     }
 
+    const handleCreateRandomProcess = async () => {
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/processes', {
+                memory: memoryState,
+                min_process_size: minProcessSize,
+                max_process_size: maxProcessSize,
+            });
+            setError(null);
+            processPool.push(response.data.process);
+            setProcessPool([...processPool]);
+        } catch (error) {
+            console.error('Error during random process creation:', error);
+            setError('An error occurred during random process creation. Please try again.');
+        }   
+    }
+
     return (
         <div className='flex flex-col max-w-6xl p-4 mx-auto'>
             {error ? <div className='alert alert-error'>{error}</div> : null}
@@ -93,7 +109,7 @@ function App() {
                         <h2 className='text-lg font-bold'>Random Process Creation</h2>
                         <KBInput label='Min Process Size' value={minProcessSize} onChange={setMinProcessSize} />
                         <KBInput label='Max Process Size' value={maxProcessSize} onChange={setMaxProcessSize} />
-                        <button className='btn btn-outline btn-secondary rounded-lg' onClick={handleCreateProcess}>Create Random Process</button>
+                        <button className='btn btn-outline btn-secondary rounded-lg' onClick={handleCreateRandomProcess}>Create Random Process</button>
                     </div>
                     <div className='divider'></div>
                     {/* Process Pool and Sim Controls */}
