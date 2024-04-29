@@ -1,17 +1,19 @@
 import PropTypes from 'prop-types';
 
-const MemoryBlock = ({ block }) => {
-    const width_percent = `${parseInt((block.size / block.memory_size) * 100)}%`;
+const MemoryBlock = ({ block, memory_size }) => {
+    console.log();
+    const width_percent = `${parseInt((block.size / memory_size) * 100)}%`;
     const color = block.process ? "bg-amber-300" : "bg-blue-300";
     return (
-        <div className='tooltip w-full' data-tip={`Size: ${block.size} KB\n${block.process ? `Process: ${block.process.id}` : ''}`}>
-            <div className={`h-16 ${color} rounded-md`} style={{width: width_percent}}></div>
+        <div className={`tooltip`} data-tip={`Size: ${block.size} KB\n${block.process ? `Process: ${block.process.id}` : ''}`} style={{ width: width_percent }}>
+            <div className={`h-16 w-full ${color} rounded-md`}></div>
         </div>
     )
 }
 
 MemoryBlock.propTypes = {
     block: PropTypes.object.isRequired,
+    memory_size: PropTypes.number.isRequired,
 }
 
 export default MemoryBlock;

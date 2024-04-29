@@ -6,7 +6,7 @@ const MemoryState = ({ memory }) => {
     for (let i = 0; i < memory.memory.blocks.length; i++) {
         // TODO: Extract this into a separate component with info about the block
         blocks.push(
-            <MemoryBlock block={memory.memory.blocks[i]} key={i} />
+            <MemoryBlock block={memory.memory.blocks[i]} memory_size={memory.memory.size} key={i} />
         );
     }
     return (
