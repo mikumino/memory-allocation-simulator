@@ -22,18 +22,29 @@ class Memory:
 
 # A memory block, what Memory class will be made of
 class MemoryBlock:
-    def __init__(self, size, allocated=False):
+    def __init__(self, size, allocated=False, process=None):
         self.size = size
         self.allocated = allocated
-    
+        self.process = process
     def copy(self):
-        return MemoryBlock(self.size, self.allocated)
+        return MemoryBlock(self.size, self.allocated, self.process)
+    def to_dict(self):
+        return {
+            "size": self.size,
+            "allocated": self.allocated,
+            "process": self.process.to_dict() if self.process else None
+        }
 
 
 class Process:
     def __init__(self, id, size):
         self.id = id
         self.size = size
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "size": self.size
+        }
 
 # Function to generate random process sizes
 def generate_processes(num_processes, min_size, max_size):
@@ -51,6 +62,11 @@ def random_memory_state(memory, min_block_size, max_block_size):
     # randomly allocate blocks
     for block in memory.blocks:
         block.allocated = random.choice([True, False])
+        if block.allocated:
+            process_id = random.randint(0, 999)
+            while any(block.process and block.process.id == process_id for block in memory.blocks):
+                process_id = random.randint(0, 999)
+            block.process = Process(process_id, block.size)
     
 
 # Attempts to allocate by looking for the first block that fits the process

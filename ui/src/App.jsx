@@ -33,7 +33,18 @@ function App() {
     };
 
     const handleInitializeMemory = async () => {
-        // TODO: Implement this function
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/init_memory', {
+                memory_size: memorySize,
+                min_block_size: minBlockSize,
+                max_block_size: maxBlockSize,
+            });
+            setError(null);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error during memory initialization:', error);
+            setError('An error occurred during memory initialization. Please try again.');
+        }
         console.log('Memory initialized');
     };
 
