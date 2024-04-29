@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import KBInput from './components/KBInput';
 import MemoryState from './components/MemoryState';
+import MemoryStateTable from './components/MemoryStateTable';
 import axios from 'axios';
 
 function App() {
@@ -74,40 +75,8 @@ function App() {
                         <h2 className='text-lg font-bold'>Initial Memory State</h2>
                         {/* TODO: Memory state visualization */}
                         {/* Placeholder stuff, make actual component */}
-                        {memoryState ? <MemoryState memory={memoryState} /> : null}
-                        <div className='overflow-y-auto max-h-64 w-full'>
-                            <table className='table '>
-                                <thead>
-                                    <tr>
-                                        <th>Block</th>
-                                        <th>Size</th>
-                                        <th>Allocated</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>8 KB</td>
-                                        <td>Yes</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>16 KB</td>
-                                        <td>No</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>32 KB</td>
-                                        <td>Yes</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>100 KB</td>
-                                        <td>No</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        {memoryState ? <MemoryState memory={memoryState} /> : <p>Memory not yet initialized.</p>}
+                        {memoryState ? <MemoryStateTable memory={memoryState} /> : null}
                     </div>
                 </div>
                 {/* Second column, process creation, pool*/}
