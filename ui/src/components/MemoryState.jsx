@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types';
+import MemoryBlock from './MemoryBlock';
 
 const MemoryState = ({ memory }) => {
-    console.log(memory.memory);
     let blocks = [];
     for (let i = 0; i < memory.memory.blocks.length; i++) {
-        const width_percent = `${parseInt((memory.memory.blocks[i].size / memory.memory.size) * 100)}%`;
-        const color = memory.memory.blocks[i].process ? "bg-amber-300" : "bg-blue-300";
         // TODO: Extract this into a separate component with info about the block
         blocks.push(
-            <div key={i} className={`h-16 ${color} rounded-md`} style={{width: width_percent}}></div>
+            <MemoryBlock block={memory.memory.blocks[i]} key={i} />
         );
     }
     return (
