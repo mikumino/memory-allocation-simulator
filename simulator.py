@@ -74,10 +74,20 @@ def random_memory_state(memory, min_block_size, max_block_size):
         # Add either a random block size or the remaining space in the memory
         memory.add_block(min(random.randint(min_block_size, max_block_size), memory.size - sum([block.size for block in memory.blocks])))
     # randomly allocate blocks
-    for block in memory.blocks:
-        block.allocated = random.choice([True, False])
-        if block.allocated:
-            block.process = Process(generate_process_id(memory), block.size)
+    i = 0
+    while (i < len(memory.blocks)):
+        memory.blocks[i].allocated = random.choice([True, False])
+        # if the block is allocated, generate a process and attach it to the block
+        if memory.blocks[i].allocated:
+            memory.blocks[i].process = Process(generate_process_id(memory), memory.blocks[i].size)
+        # if the last block is unallocated and this block is also unallocated, merge them
+        elif i > 0 and not memory.blocks[i-1].allocated and not memory.blocks[i].allocated:
+            memory.blocks[i-1].size += memory.blocks[i].size
+            memory.blocks.pop(i)
+            i -= 1
+            continue
+        i += 1
+
     
 
 # Attempts to allocate by looking for the first block that fits the process
