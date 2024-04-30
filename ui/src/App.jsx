@@ -35,6 +35,7 @@ function App() {
             console.log(response.data);
             setMemoryState(response.data);
             setProcessPool(processPool.filter(process => process.id !== selectedProcess.id));
+            setSelectedProcess(null);
         } catch (error) {
             console.error('Error during memory initialization:', error);
             setToast({message:`Failed to allocate Process ${selectedProcess.id}`, type:'error'})
