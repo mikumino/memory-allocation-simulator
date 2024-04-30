@@ -43,6 +43,24 @@ function App() {
         }
     }
 
+    // attempt to allocate all processes in the pool
+    const handleAllocateAll = async () => {
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/allocate/all', {
+                memory: memoryState,
+                process_pool: processPool,
+                algorithm: algorithm,
+            });
+            setError(null);
+            console.log(response.data);
+            setMemoryState(response.data);
+            setProcessPool(response.data.unallocated_processes);
+        } catch (error) {
+            console.error('Error during memory initialization:', error);
+            setError('An error occurred during memory initialization. Please try again.');
+        }
+    }
+
     const handleInitializeMemory = async () => {
         try {
             const response = await axios.post('http://127.0.0.1:5000/init_memory', {
@@ -116,6 +134,7 @@ function App() {
             });
             setError(null);
             setMemoryState(response.data);
+            setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
             setError('An error occurred during process freeing. Please try again.');
@@ -131,6 +150,7 @@ function App() {
             });
             setError(null);
             setMemoryState(response.data);
+            setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
             setError('An error occurred during process freeing. Please try again.');
@@ -146,6 +166,7 @@ function App() {
             });
             setError(null);
             setMemoryState(response.data);
+            setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
             setError('An error occurred during process freeing. Please try again.');
@@ -213,7 +234,7 @@ function App() {
                         </div>
                         <div className='flex flex-row flex-grow w-full gap-2 items-center'>
                             <button className='btn btn-primary rounded-lg flex-grow' onClick={handleAllocate}>Allocate</button>
-                            <button className='btn btn-outline btn-danger rounded-lg flex-grow'>Allocate All</button>
+                            <button className='btn btn-outline btn-warning rounded-lg flex-grow' onClick={handleAllocateAll}>Allocate All</button>
                         </div>
                     </div>
                 </div>

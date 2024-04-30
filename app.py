@@ -8,7 +8,10 @@ CORS(app)   # this is bad for production but we're not deploying this right LOL
 
 # there's probably a better way to do this but im lazy!!
 algos = {
-    "first_fit": first_fit
+    "first_fit": first_fit,
+    "best_fit": best_fit,
+    "worst_fit": worst_fit,
+    "next_fit": next_fit
 }
 
 # This endpoint initializes memory with random blocks and allocations, responds with the memory state
@@ -111,5 +114,21 @@ def allocate():
         print(e)
         return jsonify({"error": str(e)}), 400
     
+@app.route("/allocate/all", methods=["POST"])
+def allocate_all():
+    try:
+        data = json.loads(request.data)
+        memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
+        process_pool = data["process_pool"]
+        algorithm = data["algorithm"]
+        unallocated_processes = []
+        for process in process_pool:
+            if (algos[algorithm](memory, Process(process["id"], process["size"])) == False):
+                unallocated_processes.append(process)
+        return jsonify({"memory": memory.to_dict(), "unallocated_processes": unallocated_processes})
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 400
+
 if __name__ == "__main__":
     app.run(debug=True)
