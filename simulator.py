@@ -102,10 +102,14 @@ def next_fit(memory, process):
 # TODO: Implement best fit algorithm
 # Searches for the smallest block that fits the process
 def best_fit(memory, process):
+   # for every block in memory, find the smallest block that fits the process
+   # if no block fits, return None
    return None
 
 # TODO: Implement worst fit algorithm
 # Searches for the largest block that fits the process
 def worst_fit(memory, process):
+    # for every block in memory, find the largest block that fits the process
+    # if no block fits,
    return None
 
