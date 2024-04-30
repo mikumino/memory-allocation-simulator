@@ -122,6 +122,21 @@ function App() {
         }
     }
 
+    const handleFreeRandomProcess = async () => {
+        try {
+            const response = await axios.delete('http://127.0.0.1:5000/processes/random', {
+                data: {
+                    memory: memoryState,
+                }
+            });
+            setError(null);
+            setMemoryState(response.data);
+        } catch (error) {
+            console.error('Error during process freeing:', error);
+            setError('An error occurred during process freeing. Please try again.');
+        }
+    }
+
     const handleFreeAllProcesses = async () => {
         try {
             const response = await axios.delete('http://127.0.0.1:5000/processes/all', {
@@ -212,7 +227,7 @@ function App() {
                 <p className='mb-4'>Selected block: { selectedBlock || selectedBlock === 0 ? selectedBlock : 'No block selected'}</p>
                 <div className='flex flex-row'>
                     <button className='btn btn-outline btn-success rounded-lg mr-2' onClick={handleFreeProcess}>Free Process</button>
-                    <button className='btn btn-outline btn-info rounded-lg' >Free Random Process</button>
+                    <button className='btn btn-outline btn-info rounded-lg' onClick={handleFreeRandomProcess}>Free Random Process</button>
                     <button className='btn btn-outline btn-warning rounded-lg ml-2' onClick={handleFreeAllProcesses}>Free All Processes</button>
                 </div>
 

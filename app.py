@@ -75,6 +75,26 @@ def free_all():
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 400
+    
+# This endpoint frees a random process from memory
+@app.route("/processes/random", methods=["DELETE"])
+def free_random():
+    try:
+        data = json.loads(request.data)
+        memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
+        # ensure there is at least one process to free
+        if (len([block for block in memory.blocks if block.allocated]) == 0):
+            return jsonify({"error": "No processes to free"}), 400
+        # free a random process
+        while True:
+            block_index = random.randint(0, len(memory.blocks) - 1)
+            if free_process(memory, block_index):
+                break
+        merge_unallocated(memory)
+        return jsonify({"memory": memory.to_dict()})
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 400
 
 @app.route("/allocate", methods=["POST"])
 def allocate():
