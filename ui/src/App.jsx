@@ -230,6 +230,7 @@ function App() {
                                 <option value='first_fit'>First Fit</option>
                                 <option value='best_fit'>Best Fit</option>
                                 <option value='worst_fit'>Worst Fit</option>
+                                <option value='next_fit'>Next Fit</option>
                             </select>
                         </div>
                         <div className='flex flex-row flex-grow w-full gap-2 items-center'>

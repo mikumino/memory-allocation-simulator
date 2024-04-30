@@ -1,5 +1,7 @@
 import random
 
+last_allocated = 0
+
 class Memory:
     def __init__(self, size, blocks=[]):
         self.size = size
@@ -111,26 +113,69 @@ def random_memory_state(memory, min_block_size, max_block_size):
 
 # Attempts to allocate by looking for the first block that fits the process
 def first_fit(memory, process):
+    global last_allocated
+    index = 0
     for block in memory.blocks:
         # if block size is the same as process size and is free, turn the block to allocated
         if block.size == process.size and not block.allocated:
             block.allocated = True
             block.process = process
+            last_allocated = index
             return True
         # if block size is greater than process size and is free, split the block into an allocated and unallocated block
         elif block.size > process.size and not block.allocated:
             memory.insert_block(memory.blocks.index(block), MemoryBlock(process.size, True, process))
             block.size -= process.size  # remaining block size
+            last_allocated = index
             return True
+        index += 1
     return False
 
-# TODO: Implement next fit algorithm
 # Next fit is an optimization of first fit. It starts searching from the last block that was allocated, so we need to keep track of the last block that was allocated
 def next_fit(memory, process):
-    return None
+    global last_allocated
+    #Iterate through the blocks to find where to start
+    starting_index = last_allocated
+    if starting_index == 0:
+        for i, block in enumerate(memory.blocks):
+            if block.allocated:
+                starting_index = i + 1
+    #Find next avaliable block with given index
+    for i in range(starting_index, len(memory.blocks)):
+        block = memory.blocks[i]
+        #If block size = process size
+        if block.size == process.size and not block.allocated:
+            block.allocated = True
+            block.process = process
+            last_allocated = i
+            return True
+        #Split if block size != process size
+        elif block.size > process.size and not block.allocated:
+            memory.insert_block(i, MemoryBlock(process.size, True, process))
+            block.size -= process.size  #Eemaining block size
+            last_allocated = i
+            return True
+
+    #If no block is found, start from the beginning
+    for i in range(0, starting_index):
+        block = memory.blocks[i]
+        if block.size == process.size and not block.allocated:
+            block.allocated = True
+            block.process = process
+            last_allocated = i
+            return True
+        elif block.size > process.size and not block.allocated:
+            memory.insert_block(i, MemoryBlock(process.size, True, process))
+            block.size -= process.size  # remaining block size
+            last_allocated = i
+            return True
+
+    return False
+
 
 # Searches for the smallest block that fits the process
 def best_fit(memory, process):
+    global last_allocated
     best_index = -1
     best_size = float('inf')
     #Traverse through all the blocks
@@ -141,11 +186,14 @@ def best_fit(memory, process):
             if block.size == process.size:
                 memory.blocks[i].allocated = True
                 memory.blocks[i].process = process
+                last_allocated = i
                 return True
             #Iterate through the blocks and keep updating until we find the smallest block size that will fit
             elif block.size < best_size:
                 best_index = i
                 best_size = block.size
+                last_allocated = i
+
     if best_index != -1:
         # Split the best-fit block into an allocated block for the process and an unallocated block
         memory.insert_block(best_index, MemoryBlock(process.size, True, process))
@@ -154,13 +202,14 @@ def best_fit(memory, process):
     return False
 
 
-# Searches for the largest block that fits the process
+#Searches for the largest block that fits the process
 def worst_fit(memory, process):
+    global last_allocated
     worst_index = -1
     worst_size = -1
     #Traverse through all the blocks
     for i, block in enumerate(memory.blocks):
-        #Condition to check if block is allocated and the right size 
+        #Condition to check if block is allocated and the right size
         if not block.allocated and block.size >= process.size and block.size > worst_size:
             worst_index = i
             worst_size = block.size
@@ -169,11 +218,14 @@ def worst_fit(memory, process):
         if memory.blocks[worst_index].size == process.size:
             memory.blocks[worst_index].allocated = True
             memory.blocks[worst_index].process = process
+            last_allocated = worst_index
         else:
-        #Split the block into an allocated and unallocated if the fit was perfect
+            #Split the block into an allocated and unallocated if the fit was not perfect
             memory.insert_block(worst_index, MemoryBlock(process.size, True, process))
             memory.blocks[worst_index + 1].size -= process.size
+            last_allocated = worst_index
         return True
     return False
+
 
 
