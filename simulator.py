@@ -66,6 +66,17 @@ def generate_process_id(memory):
 def generate_process(memory, min_size, max_size):
     return Process(generate_process_id(memory), random.randint(min_size, max_size))
 
+# Merge unallocated blocks
+def merge_unallocated(memory):
+    i = 0
+    while (i < len(memory.blocks)):
+        # if the last block is unallocated and this block is also unallocated, merge them
+        if i > 0 and not memory.blocks[i-1].allocated and not memory.blocks[i].allocated:
+            memory.blocks[i-1].size += memory.blocks[i].size
+            memory.blocks.pop(i)
+            i -= 1
+        i += 1
+
 # Given a Memory, randomly allocate blocks
 def random_memory_state(memory, min_block_size, max_block_size):
     memory.blocks = []
@@ -85,7 +96,6 @@ def random_memory_state(memory, min_block_size, max_block_size):
             memory.blocks[i-1].size += memory.blocks[i].size
             memory.blocks.pop(i)
             i -= 1
-            continue
         i += 1
 
     
