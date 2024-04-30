@@ -26,6 +26,7 @@ def init():
         print(e)
         return jsonify({"error": str(e)}), 400
 
+# This endpoint generates a random process or a process with a specific memory requirement
 @app.route("/processes", methods=["POST"])
 def processes():
     try:
@@ -42,6 +43,21 @@ def processes():
         else:
             process = Process(generate_process_id(memory), data["memory_requirement"])
             return jsonify({"memory": memory.to_dict(), "process": process.to_dict()})
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 400
+
+# This endpoint frees a process from memory
+@app.route("/processes", methods=["DELETE"])
+def free():
+    try:
+        data = json.loads(request.data)
+        memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
+        selectedBlock = data["selectedBlock"]
+        if (free_process(memory, selectedBlock) == False):
+            return jsonify({"error": "Process could not be freed"}), 400
+        merge_unallocated(memory)
+        return jsonify({"memory": memory.to_dict()})
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 400
