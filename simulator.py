@@ -66,6 +66,15 @@ def generate_process_id(memory):
 def generate_process(memory, min_size, max_size):
     return Process(generate_process_id(memory), random.randint(min_size, max_size))
 
+# Free a process from memory
+def free_process(memory, block_index):
+    # if the block is allocated, free it
+    if memory.blocks[block_index].allocated:
+        memory.blocks[block_index].allocated = False
+        memory.blocks[block_index].process = None
+        return True
+    return False
+
 # Merge unallocated blocks
 def merge_unallocated(memory):
     i = 0
