@@ -1,10 +1,20 @@
 import { useState } from 'react';
+import Navbar from './components/Navbar';
 import KBInput from './components/KBInput';
 import MemoryState from './components/MemoryState';
 import MemoryStateTable from './components/MemoryStateTable';
 import ProcessPoolTable from './components/ProcessPoolTable';
 import Toast from './components/Toast';
-import axios from 'axios';
+import { 
+    initializeMemory,
+    createProcess,
+    createRandomProcesses,
+    freeProcess,
+    freeRandomProcess,
+    freeAllProcesses,
+    allocate,
+    allocateAll,
+} from './util/APIHelper';
 
 function App() {
     const [memorySize, setMemorySize] = useState(1024);
@@ -26,14 +36,10 @@ function App() {
     // single process allocation
     const handleAllocate = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/allocate', {
-                memory: memoryState,
-                process: selectedProcess,
-                algorithm: algorithm,
-            });
+            const response = await allocate(memoryState, selectedProcess, algorithm);
             setError(null);
-            console.log(response.data);
-            setMemoryState(response.data);
+            console.log(response);
+            setMemoryState(response);
             setProcessPool(processPool.filter(process => process.id !== selectedProcess.id));
             setSelectedProcess(null);
         } catch (error) {
@@ -46,15 +52,11 @@ function App() {
     // attempt to allocate all processes in the pool
     const handleAllocateAll = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/allocate/all', {
-                memory: memoryState,
-                process_pool: processPool,
-                algorithm: algorithm,
-            });
+            const response = await allocateAll(memoryState, processPool, algorithm);
             setError(null);
-            console.log(response.data);
-            setMemoryState(response.data);
-            setProcessPool(response.data.unallocated_processes);
+            console.log(response);
+            setMemoryState(response);
+            setProcessPool(response.unallocated_processes);
         } catch (error) {
             console.error('Error during memory initialization:', error);
             setError('An error occurred during memory initialization. Please try again.');
@@ -63,17 +65,13 @@ function App() {
 
     const handleInitializeMemory = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/init_memory', {
-                memory_size: memorySize,
-                min_block_size: minBlockSize,
-                max_block_size: maxBlockSize,
-            });
+            const response = await initializeMemory(memorySize, minBlockSize, maxBlockSize);
             setError(null);
             setProcessPool([]);
             setSelectedProcess(null);
             setSelectedBlock(null);
-            setMemoryState(response.data);
-            setInitialMemoryState(response.data);
+            setMemoryState(response);
+            setInitialMemoryState(response);
         } catch (error) {
             console.error('Error during memory initialization:', error);
             setError('An error occurred during memory initialization. Please try again.');
@@ -83,12 +81,9 @@ function App() {
 
     const handleCreateProcess = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/processes', {
-                memory: memoryState,
-                memory_requirement: memoryRequirement,
-            });
+            const response = await createProcess(memoryState, memoryRequirement);
             setError(null);
-            processPool.push(response.data.process);
+            processPool.push(response.process);
             setProcessPool([...processPool]);
             console.log(processPool);
             console.log('Process created');
@@ -100,13 +95,9 @@ function App() {
 
     const handleCreateRandomProcess = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/processes', {
-                memory: memoryState,
-                min_process_size: minProcessSize,
-                max_process_size: maxProcessSize,
-            });
+            const response = await createRandomProcesses(memoryState, minProcessSize, maxProcessSize)
             setError(null);
-            processPool.push(response.data.process);
+            processPool.push(response.process);
             setProcessPool([...processPool]);
         } catch (error) {
             console.error('Error during random process creation:', error);
@@ -126,14 +117,9 @@ function App() {
 
     const handleFreeProcess = async () => {
         try {
-            const response = await axios.delete('http://127.0.0.1:5000/processes', {
-                data: {
-                    memory: memoryState,
-                    selectedBlock: selectedBlock,
-                }
-            });
+            const response = await freeProcess(memoryState, selectedBlock);
             setError(null);
-            setMemoryState(response.data);
+            setMemoryState(response);
             setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
@@ -143,13 +129,9 @@ function App() {
 
     const handleFreeRandomProcess = async () => {
         try {
-            const response = await axios.delete('http://127.0.0.1:5000/processes/random', {
-                data: {
-                    memory: memoryState,
-                }
-            });
+            const response = await freeRandomProcess(memoryState);
             setError(null);
-            setMemoryState(response.data);
+            setMemoryState(response);
             setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
@@ -159,13 +141,9 @@ function App() {
 
     const handleFreeAllProcesses = async () => {
         try {
-            const response = await axios.delete('http://127.0.0.1:5000/processes/all', {
-                data: {
-                    memory: memoryState,
-                }
-            });
+            const response = await freeAllProcesses(memoryState);
             setError(null);
-            setMemoryState(response.data);
+            setMemoryState(response);
             setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
@@ -179,6 +157,8 @@ function App() {
     }
 
     return (
+        <>
+        <Navbar />
         <div className='flex flex-col max-w-6xl p-4 mx-auto'>
             {showToast ? <Toast message={toast.message} type={toast.type}  setShow={setShowToast}/> : null}
             {error ? <div className='alert alert-error'>{error}</div> : null}
@@ -255,6 +235,7 @@ function App() {
 
             </div>
         </div>
+        </>
 
     );
 }

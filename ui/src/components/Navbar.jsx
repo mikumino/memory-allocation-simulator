@@ -1,11 +1,15 @@
+import { Link, useLocation } from "react-router-dom";
+ 
 const Navbar = () => {
+    let pathname = useLocation().pathname;
     return(
         <div className="navbar shadow-lg rounded-lg">
             <div className="flex-1">
-                <a href="/" className="btn btn-ghost text-lg font-bold">Memory Allocation Simulator 📝</a>
+                <Link to="/" className="btn btn-ghost text-lg font-bold">Memory Allocation Simulator 📝</Link>
             </div>
             <div className="flex-none">
-                <a href="/benchmark" className="btn btn-ghost">Benchmark</a>
+                <Link to="/" className={`btn btn-ghost ${pathname == '/' ? 'text-accent' : ''}`}>Simulator</Link>
+                <Link to="/benchmark" className={`btn btn-ghost ${pathname == '/benchmark' ? 'text-accent' : ''}`}>Benchmark</Link>
             </div>
         </div>
     )
