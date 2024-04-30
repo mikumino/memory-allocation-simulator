@@ -5,7 +5,6 @@ import MemoryStateTable from './components/MemoryStateTable';
 import ProcessPoolTable from './components/ProcessPoolTable';
 import Toast from './components/Toast';
 import axios from 'axios';
-import Navbar from './components/Navbar.jsx'
 
 function App() {
     const [memorySize, setMemorySize] = useState(1024);
