@@ -77,7 +77,7 @@ def merge_unallocated(memory):
             i -= 1
         i += 1
 
-# Given a Memory, randomly allocate blocks
+# Given a Memory, randomly create blocks, allocate them, and merge unallocated blocks
 def random_memory_state(memory, min_block_size, max_block_size):
     memory.blocks = []
     # While there is still space in the memory, add blocks
