@@ -62,6 +62,20 @@ def free():
         print(e)
         return jsonify({"error": str(e)}), 400
 
+# This endpoint frees all processes from memory
+@app.route("/processes/all", methods=["DELETE"])
+def free_all():
+    try:
+        data = json.loads(request.data)
+        memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
+        for i in range(len(memory.blocks)):
+            free_process(memory, i)
+        merge_unallocated(memory)
+        return jsonify({"memory": memory.to_dict()})
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 400
+
 @app.route("/allocate", methods=["POST"])
 def allocate():
     try:
