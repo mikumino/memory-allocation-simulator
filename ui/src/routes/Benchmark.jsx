@@ -37,7 +37,7 @@ function Benchmark() {
 
     const handleProcessCreation = () => {
         // Try to send a POST request to the API
-        // Supply the request with the request percentage, min block size, and max block size
+        // Supply the request with the request percentage, min request size, and max request size
         // The API should return a dictionary with the process pool
         // Set the process pool to the returned process pool
         // Catch errors, log them to console
