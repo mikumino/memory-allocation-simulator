@@ -134,6 +134,7 @@ function App() {
             });
             setError(null);
             setMemoryState(response.data);
+            setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
             setError('An error occurred during process freeing. Please try again.');
@@ -149,6 +150,7 @@ function App() {
             });
             setError(null);
             setMemoryState(response.data);
+            setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
             setError('An error occurred during process freeing. Please try again.');
@@ -164,6 +166,7 @@ function App() {
             });
             setError(null);
             setMemoryState(response.data);
+            setSelectedBlock(null);
         } catch (error) {
             console.error('Error during process freeing:', error);
             setError('An error occurred during process freeing. Please try again.');
