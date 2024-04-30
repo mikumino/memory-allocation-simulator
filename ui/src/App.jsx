@@ -6,12 +6,12 @@ import ProcessPoolTable from './components/ProcessPoolTable';
 import axios from 'axios';
 
 function App() {
-    const [memorySize, setMemorySize] = useState(1000);
-    const [memoryRequirement, setMemoryRequirement] = useState(50);
-    const [minProcessSize, setMinProcessSize] = useState(100);
-    const [maxProcessSize, setMaxProcessSize] = useState(300);
-    const [minBlockSize, setMinBlockSize] = useState(1);
-    const [maxBlockSize, setMaxBlockSize] = useState(500);
+    const [memorySize, setMemorySize] = useState(1024);
+    const [memoryRequirement, setMemoryRequirement] = useState(64);
+    const [minProcessSize, setMinProcessSize] = useState(8);
+    const [maxProcessSize, setMaxProcessSize] = useState(256);
+    const [minBlockSize, setMinBlockSize] = useState(8);
+    const [maxBlockSize, setMaxBlockSize] = useState(512);
     const [algorithm, setAlgorithm] = useState('first_fit');
     const [initialMemoryState, setInitialMemoryState] = useState(null);
     const [memoryState, setMemoryState] = useState(null);
