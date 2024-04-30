@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
  
 const Navbar = () => {
     let pathname = useLocation().pathname;
-    console.log(pathname);
     return(
         <div className="navbar shadow-lg rounded-lg">
             <div className="flex-1">

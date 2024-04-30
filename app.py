@@ -34,10 +34,10 @@ def init():
 def processes():
     try:
         data = json.loads(request.data)
-        # if memory requirement isn't given, they want a random process
+        # if memory requirement is -1, they want a random process
         print(data["memory"]['memory']['blocks'])
         memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
-        if "memory_requirement" not in data:
+        if data["memory_requirement"] == -1:
             min_process_size = data["min_process_size"]
             max_process_size = data["max_process_size"]
             process = generate_process(memory, min_process_size, max_process_size)
