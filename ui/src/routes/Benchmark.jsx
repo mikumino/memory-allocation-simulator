@@ -95,6 +95,35 @@ function Benchmark() {
                         </div>      
                     </div>
                 </div>
+                <div className="divider"></div>
+                <h1 className="text-2xl font-bold mb-4">Benchmark</h1>
+                {/* Grid with all algorithms, their memory states, tables */}
+                <div className="grid grid-cols-2 p-4 gap-4">
+                    {/* First Fit */}
+                    <div className="flex flex-col space-y-4">
+                        <h2 className="text-lg font-bold">First Fit</h2>
+                        {firstFitMemoryState ? <MemoryState memory={firstFitMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
+                        {firstFitMemoryState ? <MemoryStateTable memory={firstFitMemoryState} /> : null}
+                    </div>
+                    {/* Next Fit */}
+                    <div className="flex flex-col space-y-4">
+                        <h2 className="text-lg font-bold">Next Fit</h2>
+                        {nextFitMemoryState ? <MemoryState memory={nextFitMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
+                        {nextFitMemoryState ? <MemoryStateTable memory={nextFitMemoryState} /> : null}
+                    </div>
+                    {/* Best Fit */}
+                    <div className="flex flex-col space-y-4">
+                        <h2 className="text-lg font-bold">Best Fit</h2>
+                        {bestFitMemoryState ? <MemoryState memory={bestFitMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
+                        {bestFitMemoryState ? <MemoryStateTable memory={bestFitMemoryState} /> : null}
+                    </div>
+                    {/* Worst Fit */}
+                    <div className="flex flex-col space-y-4">
+                        <h2 className="text-lg font-bold">Worst Fit</h2>
+                        {worstFitMemoryState ? <MemoryState memory={worstFitMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
+                        {worstFitMemoryState ? <MemoryStateTable memory={worstFitMemoryState} /> : null}
+                    </div>
+                </div>
             </div>
         </div>
         </>
