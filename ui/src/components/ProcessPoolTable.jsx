@@ -27,6 +27,7 @@ const ProcessPoolTable = ({ processes, handleProcessSelection }) => {
 
 ProcessPoolTable.propTypes = {
     processes: PropTypes.array.isRequired,
+    handleProcessSelection: PropTypes.func.isRequired
 }
 
 export default ProcessPoolTable;

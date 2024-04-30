@@ -14,6 +14,7 @@ const MemoryBlock = ({ block, memory_size, handleBlockSelection }) => {
 MemoryBlock.propTypes = {
     block: PropTypes.object.isRequired,
     memory_size: PropTypes.number.isRequired,
+    handleBlockSelection: PropTypes.func.isRequired
 }
 
 export default MemoryBlock;

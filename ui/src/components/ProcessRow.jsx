@@ -11,6 +11,7 @@ const ProcessRow = ({ process, handleProcessSelection }) => {
 
 ProcessRow.propTypes = {
     process: PropTypes.object.isRequired,
+    handleProcessSelection: PropTypes.func.isRequired
 };
 
 export default ProcessRow;

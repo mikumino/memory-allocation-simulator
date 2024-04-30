@@ -18,6 +18,7 @@ const MemoryState = ({ memory, handleBlockSelection }) => {
 
 MemoryState.propTypes = {
     memory: PropTypes.object.isRequired,
+    handleBlockSelection: PropTypes.func.isRequired
 }
 
 export default MemoryState;
