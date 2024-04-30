@@ -8,8 +8,8 @@ class Memory:
     def add_block(self, size):
         self.blocks.append(MemoryBlock(size))
 
-    def insert_block(self, index, size, allocated):
-        self.blocks.insert(index, MemoryBlock(size, allocated))
+    def insert_block(self, index, memory_block):
+        self.blocks.insert(index, memory_block)
 
     # Sum of unallocated blocks
     def get_available_space(self):
@@ -106,10 +106,11 @@ def first_fit(memory, process):
         # if block size is the same as process size and is free, turn the block to allocated
         if block.size == process.size and not block.allocated:
             block.allocated = True
+            block.process = process
             return True
         # if block size is greater than process size and is free, split the block into an allocated and unallocated block
         elif block.size > process.size and not block.allocated:
-            memory.insert_block(memory.blocks.index(block), process.size, True)
+            memory.insert_block(memory.blocks.index(block), MemoryBlock(process.size, True, process))
             block.size -= process.size  # remaining block size
             return True
     return False
