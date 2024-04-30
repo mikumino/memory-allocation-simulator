@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Navbar from './components/Navbar';
 import KBInput from './components/KBInput';
 import MemoryState from './components/MemoryState';
 import MemoryStateTable from './components/MemoryStateTable';
@@ -179,6 +180,8 @@ function App() {
     }
 
     return (
+        <>
+        <Navbar />
         <div className='flex flex-col max-w-6xl p-4 mx-auto'>
             {showToast ? <Toast message={toast.message} type={toast.type}  setShow={setShowToast}/> : null}
             {error ? <div className='alert alert-error'>{error}</div> : null}
@@ -255,6 +258,7 @@ function App() {
 
             </div>
         </div>
+        </>
 
     );
 }
