@@ -11,9 +11,13 @@ function Benchmark() {
     const [memorySize, setMemorySize] = useState(1024);
     const [minBlockSize, setMinBlockSize] = useState(8);
     const [maxBlockSize, setMaxBlockSize] = useState(512);
-    // Memory state
-    const [memoryState, setMemoryState] = useState(false);
-    const [initialMemoryState, setInitialMemoryState] = useState([]);
+    // Memory states
+    const [firstFitMemoryState, setfirstFitMemoryState] = useState(null);
+    const [nextFitMemoryState, setNextFitMemoryState] = useState(null);
+    const [bestFitMemoryState, setBestFitMemoryState] = useState(null);
+    const [worstFitMemoryState, setWorstFitMemoryState] = useState(null);
+    // Initial memory state
+    const [initialMemoryState, setInitialMemoryState] = useState(null);
     // Process initialization
     const [requestPercentage, setRequestPercentage] = useState(50);
     // Process pool
@@ -22,10 +26,26 @@ function Benchmark() {
     // Event Handlers
     const handleInitializeMemory = () => {
         // Should be the same as the one in the Simulator
+        // Try to send a POST request to the API
+        // Supply the request with the memory size, min block size, and max block size
+        // The API should return the initial memory state
+        // Set the memory states to the initial memory state
+        // Save the initial memory state for reference
+        // Catch errors, log them to console
         console.log('Initializing Memory');
     }
 
-    const handleProcessSelection = () => {}
+    const handleProcessCreation = () => {
+        // Try to send a POST request to the API
+        // Supply the request with the request percentage, min block size, and max block size
+        // The API should return a dictionary with the process pool
+        // Set the process pool to the returned process pool
+        // Catch errors, log them to console
+    }
+
+    const handleProcessSelection = () => {
+        // Do nothing, we don't want to select a process in the benchmark
+    }
 
     const dummyFunction = ()=> {}
 
@@ -48,8 +68,8 @@ function Benchmark() {
                         {/* Initial memory state */}
                         <div className='flex flex-col space-y-4 mb-4'>
                             <h2 className='text-lg font-bold'>Initial Memory State</h2>
-                            {memoryState ? <MemoryState memory={initialMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
-                            {memoryState ? <MemoryStateTable memory={initialMemoryState} /> : null}
+                            {initialMemoryState ? <MemoryState memory={initialMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
+                            {initialMemoryState ? <MemoryStateTable memory={initialMemoryState} /> : null}
                         </div>
                     </div>
                     <div className="divider divider-horizontal p-2"></div>
@@ -66,7 +86,7 @@ function Benchmark() {
                             </div>
                             <KBInput label="Min Request Size" value={minBlockSize} onChange={setMinBlockSize} />
                             <KBInput label="Max Request Size" value={maxBlockSize} onChange={setMaxBlockSize} />
-                            <button className="btn btn-primary rounded-lg">Initialize Process Pool</button>
+                            <button className="btn btn-primary rounded-lg" onClick={handleProcessCreation}>Initialize Process Pool</button>
                         </div>
                         <div className="divider"></div>
                         <div className="flex flex-col space-y-4 mb-4">
