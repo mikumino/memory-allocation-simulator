@@ -9,6 +9,7 @@ const MemoryStateTable = ({ memory }) => {
                     <th>Block</th>
                     <th>Size</th>
                     <th>Allocated</th>
+                    <th>Process ID</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,6 +18,7 @@ const MemoryStateTable = ({ memory }) => {
                         <td>{i}</td>
                         <td>{block.size} KB</td>
                         <td>{block.process ? 'Yes' : 'No'}</td>
+                        <td>{block.process ? block.process.id : ''}</td>
                     </tr>
                 ))}
             </tbody>

@@ -158,7 +158,7 @@ function App() {
                 <h1 className='text-2xl font-bold mb-4'>Simulation</h1>
                 {memoryState ? <MemoryState memory={memoryState} handleBlockSelection={handleBlockSelection}/> : <p>Memory not yet initialized.</p>}
                 {memoryState ? <MemoryStateTable memory={memoryState} /> : null}
-                <p className='mb-4'>Selected block: {selectedBlock ? selectedBlock.size : 'No block selected'}</p>
+                <p className='mb-4'>Selected block: { selectedBlock || selectedBlock === 0 ? selectedBlock : 'No block selected'}</p>
                 <div className='flex flex-row'>
                     <button className='btn btn-outline btn-success rounded-lg mr-2'>Free Process</button>
                     <button className='btn btn-outline btn-info rounded-lg'>Free Random Process</button>
