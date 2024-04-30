@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import KBInput from './components/KBInput';
 import MemoryState from './components/MemoryState';
 import MemoryStateTable from './components/MemoryStateTable';
