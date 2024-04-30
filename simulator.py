@@ -132,9 +132,28 @@ def next_fit(memory, process):
 # TODO: Implement best fit algorithm
 # Searches for the smallest block that fits the process
 def best_fit(memory, process):
-   # for every block in memory, find the smallest block that fits the process
-   # if no block fits, return None
-   return None
+    best_index = -1
+    best_size = float('inf')
+    #Traverse through all the blocks
+    for i, block in enumerate(memory.blocks):
+        #If block isn't allocated and it's size is greater than process size
+        if not block.allocated and block.size >= process.size:
+            #Ideal condition, block size is the same as process size then allocate
+            if block.size == process.size:
+                memory.blocks[i].allocated = True
+                memory.blocks[i].process = process
+                return True
+            #Iterate through the blocks and keep updating until we find the smallest block size that will fit
+            elif block.size < best_size:
+                best_index = i
+                best_size = block.size
+    if best_index != -1:
+        # Split the best-fit block into an allocated block for the process and an unallocated block
+        memory.insert_block(best_index, MemoryBlock(process.size, True, process))
+        memory.blocks[best_index + 1].size -= process.size
+        return True
+    return False
+
 
 # TODO: Implement worst fit algorithm
 # Searches for the largest block that fits the process
