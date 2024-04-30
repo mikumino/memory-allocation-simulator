@@ -8,7 +8,10 @@ CORS(app)   # this is bad for production but we're not deploying this right LOL
 
 # there's probably a better way to do this but im lazy!!
 algos = {
-    "first_fit": first_fit
+    "first_fit": first_fit,
+    "best_fit": best_fit,
+    "worst_fit": worst_fit,
+    "next_fit": next_fit
 }
 
 # This endpoint initializes memory with random blocks and allocations, responds with the memory state
