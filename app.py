@@ -46,6 +46,20 @@ def processes():
         print(e)
         return jsonify({"error": str(e)}), 400
 
+@app.route("/allocate", methods=["POST"])
+def allocate():
+    try:
+        data = json.loads(request.data)
+        print(request.data)
+        memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
+        process = Process(data["process"]["id"], data["process"]["size"])
+        algorithm = data["algorithm"]
+        if (algos[algorithm](memory, process) == False):
+            return jsonify({"error": "Process could not be allocated"}), 400
+        return jsonify({"memory": memory.to_dict()})
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 400
     
 if __name__ == "__main__":
     app.run(debug=True)

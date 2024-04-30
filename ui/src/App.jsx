@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import KBInput from './components/KBInput';
 import MemoryState from './components/MemoryState';
 import MemoryStateTable from './components/MemoryStateTable';
 import ProcessPoolTable from './components/ProcessPoolTable';
+import Toast from './components/Toast';
 import axios from 'axios';
 
 function App() {
@@ -19,9 +20,26 @@ function App() {
     const [selectedProcess, setSelectedProcess] = useState(null);
     const [selectedBlock, setSelectedBlock] = useState(null);
     const [error, setError] = useState(null);
-
+    const [toast, setToast] = useState({message:'', type:''});
+    const [showToast, setShowToast] = useState(false);
+    
+    // single process allocation
     const handleAllocate = async () => {
-        // TODO: Implement this function
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/allocate', {
+                memory: memoryState,
+                process: selectedProcess,
+                algorithm: algorithm,
+            });
+            setError(null);
+            console.log(response.data);
+            setMemoryState(response.data);
+            setProcessPool(processPool.filter(process => process.id !== selectedProcess.id));
+        } catch (error) {
+            console.error('Error during memory initialization:', error);
+            setToast({message:`Failed to allocate Process ${selectedProcess.id}`, type:'error'})
+            setShowToast(true);
+        }
     }
 
     const handleInitializeMemory = async () => {
@@ -94,6 +112,7 @@ function App() {
 
     return (
         <div className='flex flex-col max-w-6xl p-4 mx-auto'>
+            {showToast ? <Toast message={toast.message} type={toast.type}  setShow={setShowToast}/> : null}
             {error ? <div className='alert alert-error'>{error}</div> : null}
             <div className='flex flex-row'>
                 {/* First column, memory initialization, memory state, process freeing */}
