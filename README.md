@@ -24,3 +24,8 @@ Start the UI by cd'ing into the `ui` directory and running:
 ```bash
 npm run dev
 ```
+
+## Screenshots
+
+### Simulator
+![Simulator](images/Screenshot_22.png)
