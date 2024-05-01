@@ -56,7 +56,7 @@ function App() {
             setError(null);
             console.log(response);
             setMemoryState(response);
-            setProcessPool(response.unallocated_processes);
+            setProcessPool(response.stats.unallocated_processes);
         } catch (error) {
             console.error('Error during memory initialization:', error);
             setError('An error occurred during memory initialization. Please try again.');

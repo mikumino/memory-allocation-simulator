@@ -9,6 +9,7 @@ const Navbar = () => {
             </div>
             <div className="flex-none">
                 <Link to="/" className={`btn btn-ghost ${pathname == '/' ? 'text-accent' : ''}`}>Simulator</Link>
+                <Link to="/single-test" className={`btn btn-ghost ${pathname == '/single-test' ? 'text-accent' : ''}`}>Single Test</Link>
                 <Link to="/benchmark" className={`btn btn-ghost ${pathname == '/benchmark' ? 'text-accent' : ''}`}>Benchmark</Link>
             </div>
         </div>

@@ -16,6 +16,11 @@ class Memory:
     # Sum of unallocated blocks
     def get_available_space(self):
         return sum([block.size for block in self.blocks if not block.allocated])
+    def get_fragmentation(self):
+        return len([block for block in self.blocks if not block.allocated]) # number of unallocated blocks, figure out how to calculate fragmentation later
+    def get_memory_utilization(self):
+        return sum([block.size for block in self.blocks if block.allocated]) / self.size * 100
+
     def copy(self):
         memory = Memory(self.size)
         memory.blocks = [block.copy() for block in self.blocks]
@@ -67,6 +72,19 @@ def generate_process_id(memory):
 # Generate a random process given min/max sizes for memory
 def generate_process(memory, min_size, max_size):
     return Process(generate_process_id(memory), random.randint(min_size, max_size))
+
+def generate_process_pool(memory, min_size, max_size, percent):
+    process_pool = []
+    target_size = int(memory.get_available_space() * (percent / 100)) # target size of the process pool
+    while target_size > 0:
+        process = generate_process(memory, min_size, max_size)
+        if process.size < target_size:
+            process_pool.append(process)
+        else:
+            process.size = target_size
+            process_pool.append(process)
+        target_size -= process.size
+    return process_pool
 
 # Free a process from memory
 def free_process(memory, block_index):

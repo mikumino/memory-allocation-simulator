@@ -34,14 +34,20 @@ def init():
 def processes():
     try:
         data = json.loads(request.data)
-        # if memory requirement is -1, they want a random process
-        print(data["memory"]['memory']['blocks'])
+        # if memory requirement isn't given, they want a random process
         memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
-        if data["memory_requirement"] == -1:
+        if "memory_requirement" not in data and data["percent_of_free"] == -1:
             min_process_size = data["min_process_size"]
             max_process_size = data["max_process_size"]
             process = generate_process(memory, min_process_size, max_process_size)
             return jsonify({"process": process.to_dict()})
+        # if percent is given, they want a pool that fills up to that percent of memory
+        elif data["percent_of_free"] > -1:
+            min_process_size = data["min_process_size"]
+            max_process_size = data["max_process_size"]
+            percent = data["percent_of_free"]
+            process_pool = generate_process_pool(memory, min_process_size, max_process_size, percent)
+            return jsonify({"process_pool": [process.to_dict() for process in process_pool]})
         # otherwise, they want a process with a specific memory requirement
         else:
             process = Process(generate_process_id(memory), data["memory_requirement"])
@@ -125,7 +131,18 @@ def allocate_all():
         for process in process_pool:
             if (algos[algorithm](memory, Process(process["id"], process["size"])) == False):
                 unallocated_processes.append(process)
-        return jsonify({"memory": memory.to_dict(), "unallocated_processes": unallocated_processes})
+        return jsonify({
+                "memory": memory.to_dict(),
+                "stats": { 
+                    "total_processes": len(process_pool),
+                    "allocated_processes": len(process_pool) - len(unallocated_processes),
+                    "unallocated_processes": unallocated_processes,
+                    "available_space": memory.get_available_space(),
+                    "fragmentation": memory.get_fragmentation(),
+                    "memory_utilization": memory.get_memory_utilization(),
+                    "success_rate": (len(process_pool) - len(unallocated_processes)) / len(process_pool) * 100
+                },
+            })
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 400
