@@ -15,7 +15,7 @@ function Benchmark() {
     // Memory initialization
     const [memorySize, setMemorySize] = useState(1024);
     const [minBlockSize, setMinBlockSize] = useState(8);
-    const [maxBlockSize, setMaxBlockSize] = useState(256);
+    const [maxBlockSize, setMaxBlockSize] = useState(128);
     // Memory states
     const [firstFitMemoryState, setfirstFitMemoryState] = useState(null);
     const [nextFitMemoryState, setNextFitMemoryState] = useState(null);
@@ -26,7 +26,7 @@ function Benchmark() {
     // Process initialization
     const [requestPercentage, setRequestPercentage] = useState(50);
     const [minRequestSize, setMinRequestSize] = useState(8);
-    const [maxRequestSize, setMaxRequestSize] = useState(128);
+    const [maxRequestSize, setMaxRequestSize] = useState(64);
     // Process pool
     const [processPool, setProcessPool] = useState([]);
 
