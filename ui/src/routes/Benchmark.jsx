@@ -12,18 +12,6 @@ import {
 } from '../util/APIHelper';
 
 function Benchmark() {
-    // Stats
-    class Stats {
-        constructor() {
-            this.total_processes = 0;
-            this.allocated_processes = 0;
-            this.processes_not_allocated = 0;
-            this.free = 0;
-            this.fragmentation = 0;
-            this.memory_utilization = 0;
-        }
-    }
-
     // React useStates
     // Memory initialization
     const [memorySize, setMemorySize] = useState(1024);
@@ -36,9 +24,9 @@ function Benchmark() {
     const [worstFitMemoryState, setWorstFitMemoryState] = useState(null);
     // Algorithm stats
     const [firstFitStats, setFirstFitStats] = useState(null);
-    const [nextFitStats, setNextFitStats] = useState(new Stats());
-    const [bestFitStats, setBestFitStats] = useState(new Stats());
-    const [worstFitStats, setWorstFitStats] = useState(new Stats());
+    const [nextFitStats, setNextFitStats] = useState(null);
+    const [bestFitStats, setBestFitStats] = useState(null);
+    const [worstFitStats, setWorstFitStats] = useState(null);
     // Initial memory state
     const [initialMemoryState, setInitialMemoryState] = useState(null);
     // Process initialization
@@ -80,15 +68,17 @@ function Benchmark() {
         // Try to send a POST request to the API
         try {
             const firstFitResponse = await allocateAll(firstFitMemoryState, processPool, 'first_fit');
-            console.log(firstFitResponse.stats);
             setfirstFitMemoryState(firstFitResponse);
             setFirstFitStats(firstFitResponse.stats);
             const nextFitResponse = await allocateAll(nextFitMemoryState, processPool, 'next_fit');
             setNextFitMemoryState(nextFitResponse);
+            setNextFitStats(nextFitResponse.stats);
             const bestFitResponse = await allocateAll(bestFitMemoryState, processPool, 'best_fit');
             setBestFitMemoryState(bestFitResponse);
+            setBestFitStats(bestFitResponse.stats);
             const worstFitResponse = await allocateAll(worstFitMemoryState, processPool, 'worst_fit');
             setWorstFitMemoryState(worstFitResponse);
+            setWorstFitStats(worstFitResponse.stats);
         } catch (error) {
             console.error(error);
         }
@@ -162,18 +152,21 @@ function Benchmark() {
                         <h2 className="text-lg font-bold">Next Fit</h2>
                         {nextFitMemoryState ? <MemoryState memory={nextFitMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
                         {nextFitMemoryState ? <MemoryStateTable memory={nextFitMemoryState} /> : null}
+                        {nextFitMemoryState ? <AlgorithmStats algorithm='Next Fit' stats={nextFitStats} /> : null}
                     </div>
                     {/* Best Fit */}
                     <div className="flex flex-col space-y-4">
                         <h2 className="text-lg font-bold">Best Fit</h2>
                         {bestFitMemoryState ? <MemoryState memory={bestFitMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
                         {bestFitMemoryState ? <MemoryStateTable memory={bestFitMemoryState} /> : null}
+                        {bestFitMemoryState ? <AlgorithmStats algorithm='Best Fit' stats={bestFitStats} /> : null}
                     </div>
                     {/* Worst Fit */}
                     <div className="flex flex-col space-y-4">
                         <h2 className="text-lg font-bold">Worst Fit</h2>
                         {worstFitMemoryState ? <MemoryState memory={worstFitMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
                         {worstFitMemoryState ? <MemoryStateTable memory={worstFitMemoryState} /> : null}
+                        {worstFitMemoryState ? <AlgorithmStats algorithm='Worst Fit' stats={worstFitStats} /> : null}
                     </div>
                 </div>
                 <button className="btn btn-primary w-fit rounded-lg mb-6" onClick={runSingleTest}>Run Test</button>
