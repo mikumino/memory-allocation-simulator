@@ -4,6 +4,16 @@ import KBInput from "../components/KBInput";
 import MemoryState from "../components/MemoryState";
 import MemoryStateTable from "../components/MemoryStateTable";
 import ProcessPoolTable from "../components/ProcessPoolTable";
+import { 
+    initializeMemory,
+    createProcess,
+    createRandomProcesses,
+    freeProcess,
+    freeRandomProcess,
+    freeAllProcesses,
+    allocate,
+    allocateAll,
+} from '../util/APIHelper';
 
 function Benchmark() {
     // React useStates
@@ -24,23 +34,31 @@ function Benchmark() {
     const [processPool, setProcessPool] = useState([]);
 
     // Event Handlers
-    const handleInitializeMemory = () => {
-        // Should be the same as the one in the Simulator
+    const handleInitializeMemory = async () => {
         // Try to send a POST request to the API
         // Supply the request with the memory size, min block size, and max block size
-        // The API should return the initial memory state
-        // Set the memory states to the initial memory state
-        // Save the initial memory state for reference
-        // Catch errors, log them to console
-        console.log('Initializing Memory');
+        try {
+            const response = await initializeMemory(memorySize, minBlockSize, maxBlockSize);
+            setInitialMemoryState(response);
+            setfirstFitMemoryState(response);
+            setNextFitMemoryState(response);
+            setBestFitMemoryState(response);
+            setWorstFitMemoryState(response);
+            setProcessPool([]);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    const handleProcessCreation = () => {
+    const handleProcessCreation = async () => {
         // Try to send a POST request to the API
-        // Supply the request with the request percentage, min request size, and max request size
-        // The API should return a dictionary with the process pool
-        // Set the process pool to the returned process pool
-        // Catch errors, log them to console
+        try {
+            const response = await createRandomProcesses(initialMemoryState, minBlockSize, maxBlockSize, requestPercentage);
+            console.log(response);
+            setProcessPool(response.process_pool);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleProcessSelection = () => {

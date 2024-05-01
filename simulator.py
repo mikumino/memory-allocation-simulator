@@ -68,6 +68,19 @@ def generate_process_id(memory):
 def generate_process(memory, min_size, max_size):
     return Process(generate_process_id(memory), random.randint(min_size, max_size))
 
+def generate_process_pool(memory, min_size, max_size, percent):
+    process_pool = []
+    target_size = int(memory.get_available_space() * (percent / 100)) # target size of the process pool
+    while target_size > 0:
+        process = generate_process(memory, min_size, max_size)
+        if process.size < target_size:
+            process_pool.append(process)
+        else:
+            process.size = target_size
+            process_pool.append(process)
+        target_size -= process.size
+    return process_pool
+
 # Free a process from memory
 def free_process(memory, block_index):
     # if the block is allocated, free it

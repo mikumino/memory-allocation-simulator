@@ -34,14 +34,20 @@ def init():
 def processes():
     try:
         data = json.loads(request.data)
-        # if memory requirement is -1, they want a random process
-        print(data["memory"]['memory']['blocks'])
+        # if memory requirement isn't given, they want a random process
         memory = Memory(data["memory"]['memory']['size'], dict_to_blocks(data["memory"]['memory']['blocks']))
-        if data["memory_requirement"] == -1:
+        if "memory_requirement" not in data and data["percent_of_free"] == -1:
             min_process_size = data["min_process_size"]
             max_process_size = data["max_process_size"]
             process = generate_process(memory, min_process_size, max_process_size)
             return jsonify({"process": process.to_dict()})
+        # if percent is given, they want a pool that fills up to that percent of memory
+        elif data["percent_of_free"] > -1:
+            min_process_size = data["min_process_size"]
+            max_process_size = data["max_process_size"]
+            percent = data["percent_of_free"]
+            process_pool = generate_process_pool(memory, min_process_size, max_process_size, percent)
+            return jsonify({"process_pool": [process.to_dict() for process in process_pool]})
         # otherwise, they want a process with a specific memory requirement
         else:
             process = Process(generate_process_id(memory), data["memory_requirement"])

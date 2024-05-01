@@ -39,13 +39,12 @@ export async function createProcess(memory, memory_requirement) {
 }
 
 // Create random processes
-export async function createRandomProcesses(memory, min_process_size, max_process_size, memory_requirement=-1, num_processes=1) {
+export async function createRandomProcesses(memory, min_process_size, max_process_size, percent_of_free=-1) {
     return fetcher('/processes', {
         memory: memory,
         min_process_size: min_process_size,
         max_process_size: max_process_size,
-        memory_requirement: memory_requirement,
-        num_processes: num_processes
+        percent_of_free: percent_of_free,
     });
 }
 
