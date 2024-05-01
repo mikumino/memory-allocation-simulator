@@ -137,7 +137,10 @@ function SingleTest() {
                     </div>
                 </div>
                 <div className="divider"></div>
-                <h1 className="text-2xl font-bold mb-4">Single Test</h1>
+                <div className="flex flex-row items-center px-4">
+                    <h1 className="text-2xl font-bold">Single Test</h1>
+                    <button className="btn btn-primary w-fit rounded-lg ml-6" onClick={runSingleTest}>Run Test</button>
+                </div>
                 {/* Grid with all algorithms, their memory states, tables */}
                 <div className="grid grid-cols-2 p-4 gap-4">
                     {/* First Fit */}
@@ -169,7 +172,6 @@ function SingleTest() {
                         {worstFitMemoryState ? <AlgorithmStats algorithm='Worst Fit' stats={worstFitStats} /> : null}
                     </div>
                 </div>
-                <button className="btn btn-primary w-fit rounded-lg mb-6" onClick={runSingleTest}>Run Test</button>
             </div>
         </div>
         </>
