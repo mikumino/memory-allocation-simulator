@@ -131,7 +131,18 @@ def allocate_all():
         for process in process_pool:
             if (algos[algorithm](memory, Process(process["id"], process["size"])) == False):
                 unallocated_processes.append(process)
-        return jsonify({"memory": memory.to_dict(), "unallocated_processes": unallocated_processes})
+        return jsonify({
+                "memory": memory.to_dict(),
+                "stats": { 
+                    "total_processes": len(process_pool),
+                    "allocated_processes": len(process_pool) - len(unallocated_processes),
+                    "unallocated_processes": unallocated_processes,
+                    "available_space": memory.get_available_space(),
+                    "fragmentation": memory.get_fragmentation(),
+                    "memory_utilization": memory.get_memory_utilization(),
+                    "success_rate": (len(process_pool) - len(unallocated_processes)) / len(process_pool) * 100
+                },
+            })
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 400

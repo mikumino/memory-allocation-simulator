@@ -16,6 +16,11 @@ class Memory:
     # Sum of unallocated blocks
     def get_available_space(self):
         return sum([block.size for block in self.blocks if not block.allocated])
+    def get_fragmentation(self):
+        return len([block for block in self.blocks if not block.allocated]) # number of unallocated blocks, figure out how to calculate fragmentation later
+    def get_memory_utilization(self):
+        return sum([block.size for block in self.blocks if block.allocated]) / self.size * 100
+
     def copy(self):
         memory = Memory(self.size)
         memory.blocks = [block.copy() for block in self.blocks]

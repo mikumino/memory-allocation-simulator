@@ -34,7 +34,8 @@ export async function initializeMemory(memorySize, minBlockSize, maxBlockSize) {
 export async function createProcess(memory, memory_requirement) {
     return fetcher('/processes', {
         memory: memory,
-        memory_requirement: memory_requirement
+        memory_requirement: memory_requirement,
+        percent_of_free: -1
     });
 }
 

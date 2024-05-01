@@ -4,6 +4,7 @@ import KBInput from "../components/KBInput";
 import MemoryState from "../components/MemoryState";
 import MemoryStateTable from "../components/MemoryStateTable";
 import ProcessPoolTable from "../components/ProcessPoolTable";
+import AlgorithmStats from "../components/AlgorithmStats";
 import { 
     initializeMemory,
     createRandomProcesses,
@@ -11,6 +12,18 @@ import {
 } from '../util/APIHelper';
 
 function Benchmark() {
+    // Stats
+    class Stats {
+        constructor() {
+            this.total_processes = 0;
+            this.allocated_processes = 0;
+            this.processes_not_allocated = 0;
+            this.free = 0;
+            this.fragmentation = 0;
+            this.memory_utilization = 0;
+        }
+    }
+
     // React useStates
     // Memory initialization
     const [memorySize, setMemorySize] = useState(1024);
@@ -21,12 +34,17 @@ function Benchmark() {
     const [nextFitMemoryState, setNextFitMemoryState] = useState(null);
     const [bestFitMemoryState, setBestFitMemoryState] = useState(null);
     const [worstFitMemoryState, setWorstFitMemoryState] = useState(null);
+    // Algorithm stats
+    const [firstFitStats, setFirstFitStats] = useState(null);
+    const [nextFitStats, setNextFitStats] = useState(new Stats());
+    const [bestFitStats, setBestFitStats] = useState(new Stats());
+    const [worstFitStats, setWorstFitStats] = useState(new Stats());
     // Initial memory state
     const [initialMemoryState, setInitialMemoryState] = useState(null);
     // Process initialization
-    const [requestPercentage, setRequestPercentage] = useState(50);
-    const [minRequestSize, setMinRequestSize] = useState(8);
-    const [maxRequestSize, setMaxRequestSize] = useState(64);
+    const [requestPercentage, setRequestPercentage] = useState(85);
+    const [minRequestSize, setMinRequestSize] = useState(64);
+    const [maxRequestSize, setMaxRequestSize] = useState(128);
     // Process pool
     const [processPool, setProcessPool] = useState([]);
 
@@ -50,7 +68,7 @@ function Benchmark() {
     const handleProcessCreation = async () => {
         // Try to send a POST request to the API
         try {
-            const response = await createRandomProcesses(initialMemoryState, minBlockSize, maxBlockSize, requestPercentage);
+            const response = await createRandomProcesses(initialMemoryState, minRequestSize, maxRequestSize, requestPercentage);
             console.log(response);
             setProcessPool(response.process_pool);
         } catch (error) {
@@ -62,7 +80,9 @@ function Benchmark() {
         // Try to send a POST request to the API
         try {
             const firstFitResponse = await allocateAll(firstFitMemoryState, processPool, 'first_fit');
+            console.log(firstFitResponse.stats);
             setfirstFitMemoryState(firstFitResponse);
+            setFirstFitStats(firstFitResponse.stats);
             const nextFitResponse = await allocateAll(nextFitMemoryState, processPool, 'next_fit');
             setNextFitMemoryState(nextFitResponse);
             const bestFitResponse = await allocateAll(bestFitMemoryState, processPool, 'best_fit');
@@ -127,7 +147,7 @@ function Benchmark() {
                     </div>
                 </div>
                 <div className="divider"></div>
-                <h1 className="text-2xl font-bold mb-4">Benchmark</h1>
+                <h1 className="text-2xl font-bold mb-4">Single Test</h1>
                 {/* Grid with all algorithms, their memory states, tables */}
                 <div className="grid grid-cols-2 p-4 gap-4">
                     {/* First Fit */}
@@ -135,6 +155,7 @@ function Benchmark() {
                         <h2 className="text-lg font-bold">First Fit</h2>
                         {firstFitMemoryState ? <MemoryState memory={firstFitMemoryState} handleBlockSelection={dummyFunction} /> : <p>Memory not yet initialized.</p>}
                         {firstFitMemoryState ? <MemoryStateTable memory={firstFitMemoryState} /> : null}
+                        {firstFitMemoryState ? <AlgorithmStats algorithm='First Fit' stats={firstFitStats} /> : null}
                     </div>
                     {/* Next Fit */}
                     <div className="flex flex-col space-y-4">
@@ -155,7 +176,7 @@ function Benchmark() {
                         {worstFitMemoryState ? <MemoryStateTable memory={worstFitMemoryState} /> : null}
                     </div>
                 </div>
-                <button className="btn btn-primary w-fit rounded-lg" onClick={runSingleTest}>Run Test</button>
+                <button className="btn btn-primary w-fit rounded-lg mb-6" onClick={runSingleTest}>Run Test</button>
             </div>
         </div>
         </>
