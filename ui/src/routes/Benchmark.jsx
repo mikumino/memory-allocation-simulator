@@ -20,7 +20,7 @@ function Benchmark() {
     // Memory initialization
     const [memorySize, setMemorySize] = useState(1024);
     const [minBlockSize, setMinBlockSize] = useState(8);
-    const [maxBlockSize, setMaxBlockSize] = useState(512);
+    const [maxBlockSize, setMaxBlockSize] = useState(256);
     // Memory states
     const [firstFitMemoryState, setfirstFitMemoryState] = useState(null);
     const [nextFitMemoryState, setNextFitMemoryState] = useState(null);
@@ -30,6 +30,8 @@ function Benchmark() {
     const [initialMemoryState, setInitialMemoryState] = useState(null);
     // Process initialization
     const [requestPercentage, setRequestPercentage] = useState(50);
+    const [minRequestSize, setMinRequestSize] = useState(8);
+    const [maxRequestSize, setMaxRequestSize] = useState(128);
     // Process pool
     const [processPool, setProcessPool] = useState([]);
 
@@ -56,6 +58,22 @@ function Benchmark() {
             const response = await createRandomProcesses(initialMemoryState, minBlockSize, maxBlockSize, requestPercentage);
             console.log(response);
             setProcessPool(response.process_pool);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const runSingleTest = async () => {
+        // Try to send a POST request to the API
+        try {
+            const firstFitResponse = await allocateAll(firstFitMemoryState, processPool, 'first_fit');
+            setfirstFitMemoryState(firstFitResponse);
+            const nextFitResponse = await allocateAll(nextFitMemoryState, processPool, 'next_fit');
+            setNextFitMemoryState(nextFitResponse);
+            const bestFitResponse = await allocateAll(bestFitMemoryState, processPool, 'best_fit');
+            setBestFitMemoryState(bestFitResponse);
+            const worstFitResponse = await allocateAll(worstFitMemoryState, processPool, 'worst_fit');
+            setWorstFitMemoryState(worstFitResponse);
         } catch (error) {
             console.error(error);
         }
@@ -102,8 +120,8 @@ function Benchmark() {
                                     <span className="ml-2">%</span>
                                 </div>
                             </div>
-                            <KBInput label="Min Request Size" value={minBlockSize} onChange={setMinBlockSize} />
-                            <KBInput label="Max Request Size" value={maxBlockSize} onChange={setMaxBlockSize} />
+                            <KBInput label="Min Request Size" value={minRequestSize} onChange={setMinRequestSize} />
+                            <KBInput label="Max Request Size" value={maxRequestSize} onChange={setMaxRequestSize} />
                             <button className="btn btn-primary rounded-lg" onClick={handleProcessCreation}>Initialize Process Pool</button>
                         </div>
                         <div className="divider"></div>
@@ -142,6 +160,7 @@ function Benchmark() {
                         {worstFitMemoryState ? <MemoryStateTable memory={worstFitMemoryState} /> : null}
                     </div>
                 </div>
+                <button className="btn btn-primary w-fit rounded-lg" onClick={runSingleTest}>Run Test</button>
             </div>
         </div>
         </>
