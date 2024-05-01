@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import Benchmark from './routes/Benchmark.jsx'
+import SingleTest from './routes/SingleTest.jsx'
 import './index.css'
 import {
     createBrowserRouter,
@@ -14,8 +14,8 @@ const router = createBrowserRouter([
         element: <App />
     },
     {
-        path: "/benchmark",
-        element: <Benchmark />
+        path: "/single-test",
+        element: <SingleTest />
     }
 ]);
 
