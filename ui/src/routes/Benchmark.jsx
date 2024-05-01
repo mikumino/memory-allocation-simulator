@@ -6,12 +6,7 @@ import MemoryStateTable from "../components/MemoryStateTable";
 import ProcessPoolTable from "../components/ProcessPoolTable";
 import { 
     initializeMemory,
-    createProcess,
     createRandomProcesses,
-    freeProcess,
-    freeRandomProcess,
-    freeAllProcesses,
-    allocate,
     allocateAll,
 } from '../util/APIHelper';
 
