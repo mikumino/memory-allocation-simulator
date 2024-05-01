@@ -11,7 +11,7 @@ import {
     allocateAll,
 } from '../util/APIHelper';
 
-function Benchmark() {
+function SingleTest() {
     // React useStates
     // Memory initialization
     const [memorySize, setMemorySize] = useState(1024);
@@ -176,4 +176,4 @@ function Benchmark() {
     );
 }
 
-export default Benchmark;
+export default SingleTest;

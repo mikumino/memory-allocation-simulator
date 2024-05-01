@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import SingleTest from './routes/SingleTest.jsx'
+import Benchmark from './routes/Benchmark.jsx'
 import './index.css'
 import {
     createBrowserRouter,
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     {
         path: "/single-test",
         element: <SingleTest />
+    },
+    {
+        path: "/benchmark",
+        element: <Benchmark />
     }
 ]);
 
