@@ -4,23 +4,30 @@ This is a memory allocation simulator that simulates various memory allocation a
 
 The simulator currently supports the following memory allocation algorithms:
 - First Fit
-- That's it rn LOL
+- Next Fit
+- Best Fit
+- Worst Fit
 
 ## Getting Started
 
-Install dependencies by running:
+Ensure Python and Node.js are installed on your machine.
+
+Install the required Python packages by running this in the root directory:
 ```bash
 pip install -r requirements.txt
-cd ui
+```
+
+Install the required Node.js packages by running this in the `ui` directory:
+```bash
 npm install
 ```
 
-Start the Flask app by running:
+To start the backend server, run this in the root directory:
 ```bash
 python app.py
 ```
 
-Start the UI by cd'ing into the `ui` directory and running:
+To start the frontend server, run this in the `ui` directory:
 ```bash
 npm run dev
 ```
@@ -29,3 +36,4 @@ npm run dev
 
 ### Simulator
 ![Simulator](images/Screenshot_22.png)
+
